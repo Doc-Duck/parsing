@@ -181,3 +181,19 @@ if __name__ == '__main__':
                         sql = f'INSERT INTO `cpus`(`link`, `price`) VALUES ("{link}",{prices[ind_min]})'
                 cur.execute(sql)
                 con.commit()
+        if 'Материнск' in names[ind_min]:
+            with con:
+                cur = con.cursor()
+                cur.execute('SELECT * FROM `motherboards`')
+                rows = cur.fetchall()
+                cur = con.cursor()
+                sql = f'INSERT INTO `motherboards`(`link`, `price`) VALUES ("{link}",{prices[ind_min]})'
+                for row in rows:
+                    row = row.items()
+                    if ('link', link) in row:
+                        sql = f'UPDATE `motherboards` SET `price`={prices[ind_min]} WHERE `link`="{link}"'
+                        break
+                    else:
+                        sql = f'INSERT INTO `motherboards`(`link`, `price`) VALUES ("{link}",{prices[ind_min]})'
+                cur.execute(sql)
+                con.commit()
